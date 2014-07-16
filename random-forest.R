@@ -2,7 +2,7 @@
 run.random.forest <- function() {
 	library(randomForest)
 	source("select-features.R")
-	load("../dream9/dream9.RData")
+	load("dream9.RData")
 	
 
 	data <- select.features()

@@ -1,7 +1,7 @@
 #library(Biobase)
 
 select.features <- function() {
-	load("../dream9/dream9.RData")
+	load("dream9.RData")
 	
 	n.samples <- dim(essentiality)[[2]]
 	n.test.samples <- dim(expression.test)[[2]]
