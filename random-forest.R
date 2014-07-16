@@ -28,6 +28,7 @@ run.random.forest <- function() {
 	#cat("Dimension of training.essentialities:", dim(training.essentialities), "\n")
 	
 	cat("dimension of essentiality[1]", dim(training.essentiality[1]), "\n")
+	time1 <- proc.time()
 	for(i in 1:n.genes) {
 		#cat("Processing gene ", i, "\n")
 		essentiality.i <- training.essentiality[i][,1]
@@ -41,8 +42,10 @@ run.random.forest <- function() {
 		#colnames(results)[i] <- gene.name
 		results[i, ] <- gene.predictions
 	}
+	time2 <- proc.time()
+	cat("Execution time: ", time2 - time1, "\n")
 	cat("Dimension of results: ", dim(results), "\n")
-	rownames(results) <- rownames(essentiality)
+	rownames(results) <- rownames(essentiality)  #[1:10]
 	colnames(results) <- colnames(expression.test)
 	return(results)
 
