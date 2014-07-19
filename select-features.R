@@ -21,11 +21,13 @@ select.features <- function() {
 	
 	selected.expression.test <- matrix(0, n.selected.expression.genes, n.test.samples)
 	selected.copynumber.test <- matrix(0, n.selected.copynumber.genes, n.test.samples)
-	
+	#rnames <- c()	
 	for(i in 1:n.selected.expression.genes) {
 		selected.expression[i,] <- expression[expression.features[i],]
+		#rnames[i] <- rownames(expression)[expression.features[i]]
 		selected.expression.test[i,] <- expression.test[expression.features[i],]
 	}
+	#rownames(selected.expression) <- rnames
 	for(i in 1:n.selected.copynumber.genes) {
 		selected.copynumber[i,] <- copy.number[copynumber.features[i],]
 		selected.copynumber.test[i,] <- copy.number.test[copynumber.features[i],]
@@ -38,7 +40,7 @@ select.features <- function() {
 	training.data <- rbind(selected.expression, selected.copynumber)
 	test.data <- rbind(selected.expression.test, selected.copynumber.test)
 	
-	return(list(training.data = training.data, test.data = test.data))
+	return(list(training.data = training.data, test.data = test.data, expression = selected.expression))
 }
 normalize.data.matrix <- function(data) {
 	n.samples <- dim(data)[[2]]
@@ -94,6 +96,7 @@ top.variance <- function(data) {
 	}
 	return(selected.features)
 }
+
 			
 			
 	
