@@ -96,6 +96,8 @@ top.variance <- function(data) {
 	}
 	return(selected.features)
 }
+select.neighbors <- function(data) {
+	
 
 			
 			
