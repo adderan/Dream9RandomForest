@@ -18,12 +18,18 @@ get.neighbors <- function(gene) {
 		
 get.all.neighbors <- function() {
 	load("dream9.RData")
-	max <- 3
-	neighbors <- list(list())
+	load("gene-neighbors.RData")
+
+	max <- 3 
 	n.genes <- dim(essentiality)[[1]]
-	for(i in 1:n.genes) {
-		Sys.sleep(1)
+	start <- length(neighbors)
+	for(i in start:n.genes) {
+		cat("Getting neighbors for: ", rownames(essentiality)[[i]], " ", i,"\n")
+		Sys.sleep(0.5)
 		neighbors[[i]] <- get.neighbors(rownames(essentiality)[i])
+		if(i %% 10 == 0) {
+			save(neighbors, file="gene-neighbors.RData")
+		}
 	}
 	save(neighbors, file="gene-neighbors.RData")
 }
