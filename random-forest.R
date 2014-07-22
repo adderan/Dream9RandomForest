@@ -1,11 +1,11 @@
 
-run.random.forest <- function() {
+run.random.forest <- function(data) {
 	library(randomForest)
 	source("select-features.R")
 	load("dream9.RData")
 	
 
-	data <- select.features()
+	#data <- select.features()
 	#print(data)
 
 	n.genes <- dim(essentiality)[[1]]

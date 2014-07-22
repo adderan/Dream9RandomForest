@@ -1,6 +1,6 @@
 #library(Biobase)
 
-select.features <- function(expression.features, copynumber.features) {
+select.data <- function(expression.features, copynumber.features) {
 	load("dream9.RData")
 	
 	n.samples <- dim(essentiality)[[2]]
@@ -66,18 +66,21 @@ top.variance <- function(data, cutoff) {
 	return(selected.features)
 }
 select.neighbors.from.expression <- function() {
-	load("gene-neighbors.RData")
+	load("intermediate/gene-neighbors.RData")
 	load("dream9.RData")
 	n.neighbors <- length(neighbors)
 
 	feature.names <- list()
-	for(i in 1:10) {
+	for(i in 1:n.neighbors) {
+		if(i %% 100 == 0) {
+			cat("processing neighbors for gene ", i, "\n")
+		}
 		feature.names.i <- list()
 
 		neighbors.for.gene <- neighbors[[i]]
 		index <- 1
 
-		cat("length of neighbors = ", length(neighbors.for.gene), "\n")
+		#cat("length of neighbors = ", length(neighbors.for.gene), "\n")
 		for(j in 1:length(neighbors.for.gene)) {
 			n <- neighbors.for.gene[[j]]
 			#cat("class of n: ", class(n), "\n")
@@ -95,22 +98,22 @@ select.neighbors.from.expression <- function() {
 }
 
 #select expression and copynumber features based on neighbors in pathway commons. If there aren't enough neighbors, take features with most variance. 
-select.features.pathway.commons <- function(n.exp, n.copy) {
-	load("dream9.RData")
-	expression.features <- select.neighbors.from.expression()
-	expression.top.variance <- top.variance(expression, 0.99)
-	n.genes <- dim(essentiality)[[1]]
-	n.samples <- dim(essentiality)[[2]]
-	for(i in 1:n.genes) {
-		n.neighbors <- length(expression.features[[i]])
-		start.index <- n.neighbors + 1
+augment.selected.features <- function(selected.features, data, n.total) {
+	top.variance.features <- top.variance(data, 0.99)
+	n.selected <- length(selected.features)
+	for(i in 1:n.selected) {
+		n.selected.for.gene <- length(selected.features[[i]])
+		start.index <- n.selected.for.gene + 1
 
 		index <- 1
-		for(j in start.index:n.exp) {
-			expression.features[[i]][[j]] <- expression.top.variance[[i]][[index]]
+		for(j in start.index:n.total) {
+			selected.features[[i]][[j]] <- top.variance.features[[i]][[index]]
 			index <- index + 1
 		}
 	}
+	return(selected.features)
+}
+
 
 			
 
