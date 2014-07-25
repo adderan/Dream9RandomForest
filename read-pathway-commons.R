@@ -33,4 +33,9 @@ get.all.neighbors <- function() {
 	}
 	save(neighbors, file="gene-neighbors.RData")
 }
+read.biopax <- function() {
+	biopax <- file("pathways/Pathway Commons.4.All.BIOPAX.owl")
+	lines <- readLines(biopax, 100)
+	return(lines)
+}
 

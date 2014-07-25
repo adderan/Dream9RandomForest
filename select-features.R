@@ -113,7 +113,23 @@ augment.selected.features <- function(selected.features, data, n.total) {
 	}
 	return(selected.features)
 }
+make.tissue.map <- function() {
+	annotations <- file("annotations/Cell_line_annotation_training.txt")
+	lines <- readLines(annotations)
+	lines <- strsplit(lines, "\t")
 
+	tissue.map <- list()
+	for(i in 1:length(lines)) {
+		tissue <- lines[[i]][[4]]
+		sample <- lines[[i]][[1]]
+		tissue.map[[sample]] <- tissue
+	}
+
+	return(tissue.map)
+}
+
+#read.leaderboard.tissues <- function() {
+	
 
 			
 

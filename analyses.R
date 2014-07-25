@@ -4,20 +4,28 @@ pathway.commons.only <- function() {
 	source("select-features.R")
 	load("dream9.RData")
 
-	redo <- TRUE
+	redo1 <- FALSE
+	redo2 <- FALSE
 	
 	if(file.exists("intermediate/neighbors-from-expression.RData")) {
 		load("intermediate/neighbors-from-expression.RData")
 	}
-	if(redo) {
+	if(redo1) {
 		neighbors.from.expression <- select.neighbors.from.expression()
-		save(neighbors.from.expression, "intermediate/neighbors-from-expression.RData")
+		save(neighbors.from.expression, file="intermediate/neighbors-from-expression.RData")
 	}
 	
 	cat("length of neighbors: ", length(neighbors.from.expression), "\n")
 
-	#expression.features <- augment.selected.features(neighbors, expression, 10)
-
+	if(file.exists("intermediate/augmented-expression-features.RData") && !redo2) {
+		load("intermediate/augmented-expression-features.RData")
+	}
+	else {
+		expression.features <- augment.selected.features(neighbors.from.expression, expression, 10)
+		save(expression.features, file="intermediate/augmented-expression-features.RData")
+	}
+	return(expression.features)
+		
 	
 	#copynumber.base.features <- list(list())
 	#copynumber.features <- augment.selected.features(copynumber.base.features, copy.number, 10)
